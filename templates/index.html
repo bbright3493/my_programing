@@ -1,3 +1,26 @@
 {% extends 'base_all.html' %}
 {% block title %}首页 - 做编程{% endblock %}
 {% load staticfiles %}
+
+
+
+
+
+
+<!-- FlexSlider -->
+<link href="css/flexslider.css" rel='stylesheet' type='text/css'/>
+<script defer src="js/jquery.flexslider.js"></script>
+<script type="text/javascript">
+    $(function () {
+        SyntaxHighlighter.all();
+    });
+    $(window).load(function () {
+        $('.flexslider').flexslider({
+            animation: "slide",
+            start: function (slider) {
+                $('body').removeClass('loading');
+            }
+        });
+    });
+</script>
+<!-- FlexSlider -->

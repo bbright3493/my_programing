@@ -17,6 +17,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/login.js' %}"></script>
     <!-- Custom Theme files -->
     <link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css'/>
     <!--webfont-->
@@ -72,14 +73,132 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <span class="menu"></span>
 
             <div class="top-menu">
-                <ul>
-                    <li><a href="#" class="btn btn-default btn-default_2 pull-left" data-toggle="modal"
-                           data-target="#applyModal">登录</a></li>
-                    <li><a href="#" class="btn btn-default btn-default_2 pull-left" data-toggle="modal"
-                           data-target="#applyModal_1">注册</a></li>
-                </ul>
+                {% if request.user.is_authenticated %}
+                    <ul>
+                        <li><a href="#" class="btn btn-default btn-default_2 pull-left" data-toggle="modal"
+                               data-target="#applyModal">{{ user.username }}</a></li>
+                    </ul>
+                {% else %}
+                    <ul>
+                        <li><a href="#" class="btn btn-default btn-default_2 pull-left" data-toggle="modal"
+                               data-target="#applyModal">登录</a></li>
+                        <li><a href="#" class="btn btn-default btn-default_2 pull-left" data-toggle="modal"
+                               data-target="#applyModal_1">注册</a></li>
+                    </ul>
+                {% endif %}
             </div>
             <div class="clearfix"></div>
+            <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog_2">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <div class="head_4">
+                                    <p>登录</p>
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="register" action="/login/" method="post">
+                                <div class="section">
+                                    <label for="username" class="field prepend-icon">
+                                        <input type="text" name="username" id="username" placeholder="Username">
+                                        <label for="username" class="field-icon">
+                                            <i class="fa fa-user"></i>
+                                        </label>
+                                    </label>
+                                </div>
+                                <div class="section">
+                                    <label for="password" class="field prepend-icon">
+                                        <input type="password" name="password" id="password" placeholder="Password">
+                                        <label for="password" class="field-icon">
+                                            <i class="fa fa-lock"></i>
+                                        </label>
+                                    </label>
+                                </div>
+                                <div class="section">
+                                    <div class="submit"><input id="jsLoginBtn" type="submit" onclick="login_form_submit()" value="登录"></div>
+                                </div>
+                                <ul class="new">
+                                    <li class="new_left"><p><a href="#">忘记密码 ?</a></p></li>
+                                    <li class="new_right"><p class="sign">新用户 ?&nbsp;&nbsp;<a href="#"
+                                                                                              data-toggle="modal"
+                                                                                              data-target="#applyModal_1">注册</a>
+                                    </p></li>
+                                    <div class="clearfix"></div>
+                                </ul>
+                                {% csrf_token %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="applyModal_1" tabindex="-1" role="dialog" aria-labelledby="applyModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog dialog_3">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                <div class="head_4">
+                                    <p>注册</p>
+                                </div>
+                            </h4>
+                        </div>
+                        <form name="row" method="post" class="register">
+
+                            <div class="section">
+                                <label for="username" class="field prepend-icon">
+                                    <input type="text" name="name" id="account_l" placeholder="输入用户名">
+                                    <label for="name" class="field-icon">
+                                        <i class="fa fa-user"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="section">
+                                <label for="password" class="field prepend-icon">
+                                    <input type="password" name="password" id="password_l" placeholder="Password">
+                                    <label for="password" class="field-icon">
+                                        <i class="fa fa-lock"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="section">
+                                <label for="username" class="field prepend-icon">
+                                    <input type="text" name="email" id="email"
+                                           placeholder="请输入邮箱地址">
+                                    <label for="email" class="field-icon">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="section">
+                                <label for="username" class="field prepend-icon">
+                                    <input type="text" name="mobile number" id="Mobile Number"
+                                           placeholder="请输入手机号">
+                                    <label for="mobile number" class="field-icon">
+                                        <i class="fa fa-phone"></i>
+                                    </label>
+                                </label>
+                            </div>
+
+
+                            <div class="section">
+                                <div class="submit"><input type="submit" onclick="myFunction()" value="注册"></div>
+                            </div>
+                           <!-- <div class="checkbox check_1">
+                                <input id="check1" type="checkbox" name="check" value="check1">
+                                <label for="check1">I agree to the Terms of Service and Privacy Policy</label>
+                            </div>-->
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -295,22 +414,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     });
 </script>
-<!-- FlexSlider -->
-<link href="css/flexslider.css" rel='stylesheet' type='text/css'/>
-<script defer src="js/jquery.flexslider.js"></script>
-<script type="text/javascript">
-    $(function () {
-        SyntaxHighlighter.all();
-    });
-    $(window).load(function () {
-        $('.flexslider').flexslider({
-            animation: "slide",
-            start: function (slider) {
-                $('body').removeClass('loading');
-            }
-        });
-    });
-</script>
-<!-- FlexSlider -->
+
 </body>
 </html>
+
+
